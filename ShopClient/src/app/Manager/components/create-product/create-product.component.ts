@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./create-product.component.css']
 })
 export class CreateProductComponent {
+  title:string = "crear producto";
 
 }
