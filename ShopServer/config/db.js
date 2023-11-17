@@ -4,10 +4,14 @@ require ('dotenv').config() //.config({path:'nombreDelArchivo.env'}); //si el ar
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.DB_MONGO)
+        console.log('BBDD Conectada.')
     } catch (error) {
-
+        console.log(error);
+        process.exit(1);
     }
 }
+
+module.exports = connectDB
 
 /*
 /-> Si un proyecto usa una versión antigua de MongoDB
