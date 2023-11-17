@@ -4,9 +4,40 @@
             <div class="card">
                 <div class="card-body text-center">
                     <span class="title">{{title | uppercase}}</span>
-                    <form action="" class="mt-3">
+                    <form action="" class="mt-3" [formGroup]="productForm" (ngSubmit)="addProduct()">
                         <div class="mb-3">
-                            <input type="text" class="form-control form-control-lg" placeholder="Producto">
+                            <input type="text" formControlName="name" class="form-control form-control-lg" placeholder="Producto">
+                            <div class="text-danger" *ngIf="validateInput('name')">
+                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="category" class="form-control form-control-lg" placeholder="Categoría">
+                            <div class="text-danger" *ngIf="validateInput('category')">
+                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="location" class="form-control form-control-lg" placeholder="Ubicación">
+                            <div class="text-danger" *ngIf="validateInput('location')">
+                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" formControlName="img" class="form-control form-control-lg" placeholder="Imagen">
+                            <div class="text-danger" *ngIf="validateInput('img')">
+                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" formControlName="price" class="form-control form-control-lg" placeholder="Precio">
+                            <div class="text-danger" *ngIf="validateInput('price')">
+                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button>VOLVER</button>
+                            <button type="submit" [disabled]="productForm.invalid" class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>
                     </form>
                 </div>

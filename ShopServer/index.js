@@ -1,0 +1,1 @@
+console.log("Lo primero de todo, ¿cómo están esos máquinas?");

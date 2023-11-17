@@ -20,6 +20,13 @@ const routes: Routes = [
       )
   },
   {
+    path: 'admin',
+    loadChildren: () =>
+      import('./Manager/manager.module').then(
+        (m) => m.ManagerModule
+      )
+  },
+  {
     path:'**',
     redirectTo:'',
     pathMatch:'full' //prefix
