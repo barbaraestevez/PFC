@@ -5,6 +5,7 @@ export class Product {
     location:string;
     img:string;
     price:number;
+    isLocalFile?:boolean;
     
     constructor(name:string, category:string, location:string, img:string, price:number) {
         this.name = name;

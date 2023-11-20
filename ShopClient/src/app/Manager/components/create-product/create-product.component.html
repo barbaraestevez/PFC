@@ -5,43 +5,60 @@
                 <div class="card-body text-center">
                     <span class="title">{{title | uppercase}}</span>
                     <form action="" class="mt-3" [formGroup]="productForm" (ngSubmit)="addProduct()">
-                        <div class="mb-3">
-                            <input type="text" formControlName="name" class="form-control form-control-lg" placeholder="Producto">
+                        <div class="mb-3" *ngFor="let param of ['name', 'category', 'location', 'price']">
+                            <input [type]="(param !== 'price')? 'text':'number'" [formControlName]="param"
+                                class="form-control form-control-lg" [placeholder]="param | titlecase">
                             <div class="text-danger" *ngIf="validateInput('name')">
-                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+                                <span>El campo <strong>{{param | uppercase}}</strong> es obligatorio.</span>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" formControlName="category" class="form-control form-control-lg" placeholder="Categoría">
-                            <div class="text-danger" *ngIf="validateInput('category')">
-                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+                            <div class="form-check form-switch d-flex align-items-center">
+                                <input class="form-check-input" formControlName="isLocalFile" type="checkbox"
+                                    role="switch" id="flexSwitchCheckChecked">
+                                <label class="form-check-label p-2" for="flexSwitchCheckChecked">
+                                    {{(productForm.value.isLocalFile)?'Subir imagen desde local':'Copiar URL de imagen'}}
+                                </label>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="location" class="form-control form-control-lg" placeholder="Ubicación">
-                            <div class="text-danger" *ngIf="validateInput('location')">
-                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="img" class="form-control form-control-lg" placeholder="Imagen">
+                            <input [type]="(productForm.value.isLocalFile)? 'file':'text'" formControlName="img" class="form-control form-control-lg"
+                                placeholder="URL de la imagen" (change)="setImg($event)">
                             <div class="text-danger" *ngIf="validateInput('img')">
-                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+                                <span>La imagen <strong> es obligatoria </strong></span>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input type="number" formControlName="price" class="form-control form-control-lg" placeholder="Precio">
-                            <div class="text-danger" *ngIf="validateInput('price')">
-                                <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <button>VOLVER</button>
-                            <button type="submit" [disabled]="productForm.invalid" class="btn btn-success btn-lg float-end">ACEPTAR</button>
+                            <button class="btn btn-primary btn-lg float-start">VOLVER</button>
+                            <button type="submit" [disabled]="productForm.invalid"
+                                class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>
                     </form>
+                    <div *ngIf="preview">
+                        <img [src]="preview" width="200px" height="200px" alt=""/>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- 
+    <div class="mb-3">
+    <input type="text" formControlName="category" class="form-control form-control-lg" placeholder="Categoría">
+    <div class="text-danger" *ngIf="validateInput('category')">
+        <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+    </div>
+</div>
+<div class="mb-3">
+    <input type="text" formControlName="location" class="form-control form-control-lg" placeholder="Ubicación">
+    <div class="text-danger" *ngIf="validateInput('location')">
+        <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+    </div>
+</div> 
+
+<div class="mb-3">
+    <input type="number" formControlName="price" class="form-control form-control-lg" placeholder="Precio">
+    <div class="text-danger" *ngIf="validateInput('price')">
+        <span>Aquí el mensaje <strong>Aquí el detalle</strong></span>
+    </div>
+    </div>
+-->

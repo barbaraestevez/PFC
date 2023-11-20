@@ -5,6 +5,8 @@ import { ListProductComponent } from './components/list-product/list-product.com
 import { ManagerRoutingModule } from './manager-routing.module';
 import { ManagerComponent } from './manager.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 
 
@@ -17,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ManagerRoutingModule
+    HttpClientModule,
+    ManagerRoutingModule,
   ]
 })
 export class ManagerModule { }
