@@ -17,8 +17,8 @@ import { ManagerModule } from './Manager/manager.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ManagerModule
-    // ReactiveFormsModule
+    ManagerModule,
+    // ReactiveFormsModule -> está declarado en el archivo "manager.module.ts"
   ],
   providers: [],
   bootstrap: [AppComponent]

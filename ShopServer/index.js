@@ -4,10 +4,12 @@ console.log("Lo primero de todo, ¿cómo están esos máquinas?");
 
 const express = require('express');
 const connectDB = require ('./config/db');
+const cors = require('cors');
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({limit:'10mb'}));
+app.use(cors());
 
 app.use('/api/products',require('./routes/product')); //especificamos el middleware. Nos sirve para importar el código que hay en products.js
 

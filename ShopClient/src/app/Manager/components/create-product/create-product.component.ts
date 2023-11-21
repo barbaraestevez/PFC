@@ -48,11 +48,12 @@ export class CreateProductComponent implements OnInit {
   }
 
   createProduct(product:Product) {
-    this._productService.saveProduct(product).pipe
+    this._productService.saveProduct(product).pipe //el pipe hay que hacerlo antes de la subscripción
     (catchError(error => { //er o error -> en este caso es lo mismo
       if(error.status === 500) { //er o error -> en este caso es lo mismo
         alert(error.error); //er o error -> en este caso es lo mismo
         this.productForm.patchValue({img:''});
+        this.preview = '';
       } else {
         console.error('Error desconocido');
       }
@@ -79,6 +80,8 @@ export class CreateProductComponent implements OnInit {
         this.productForm.patchValue({img:''});
         this.preview = '';
       }
+    } else {
+      this.preview = this.productForm.get('img')?.value;
     }
     console.log(event);
   }
