@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { catchError } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-product',
@@ -15,7 +16,7 @@ export class CreateProductComponent implements OnInit {
 
   preview!:string //la exclamación 
 
-  constructor(private _fb:FormBuilder, private _productService:ProductService){
+  constructor(private _fb:FormBuilder, private _productService:ProductService, private _router:Router, private _activatedRoute:ActivatedRoute){
     this.productForm = this._fb.group({
       name: ['', [Validators.required]],
       category: ['', [Validators.required]],
@@ -61,7 +62,10 @@ export class CreateProductComponent implements OnInit {
     }
     )
     ).subscribe(
-      data => console.log('Operación Exitosa') //TODO navigate
+      (data) => {
+        this._router.navigate(['admin','list-product'],{relativeTo:this._activatedRoute});
+      }
+        
     )
   }
 

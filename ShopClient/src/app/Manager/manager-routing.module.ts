@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateProductComponent } from './components/create-product/create-product.component';
 import { ListProductComponent } from './components/list-product/list-product.component';
 import { ManagerComponent } from './manager.component';
+import { ProductService } from './services/product.service';
 
 
 
@@ -13,7 +14,8 @@ const routes: Routes = [
     children: [
       {
         path:'list-product',
-        component: ListProductComponent
+        component: ListProductComponent,
+        resolve: { productList: () => inject(ProductService).getAllProducts()}
       },
       {
         path:'create-product',

@@ -33,6 +33,41 @@ exports.crearProducto = async (req,res) => {
     }
 }
 
+exports.getAllProducts = async (req,res) => {
+    try {
+        const products = await Product.find(); //un find() sin un parámetro dentro es como si fuera un findAll
+        res.json(products)
+    } catch (error) {
+        res.status(500).send('Ha habido un error');
+    }
+}
+
+exports.updateProduct = async (req,res) => {
+    try {
+     /*   const {name, category, location, img, price} = req.body;
+        let newProduct = await Product.findById(req.params.id);
+        if(!newProduct) {
+            res.status(400).json({msg:'No existe el producto'});
+        }
+        newProduct.name = name;
+        newProduct.category = category;
+        newProduct.location = location;
+        newProduct.img = img;
+        newProduct.price = price; */
+
+        /*newProduct = await Product.findOneAndUpdate({_id: req.params._id}, newProduct, {});*/
+        
+        const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, {new:true});
+        res.json(queryResult);
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('¡Error Crítico!');
+
+    }
+}
+
 function validateBase64Image(base64String){
     try { //decodificamos la imagen de base64
         if(!base64String.startsWith('data:image/')){
