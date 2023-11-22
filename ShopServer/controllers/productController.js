@@ -80,8 +80,7 @@ function validateBase64Image(base64String){
         }
         if(dimensions.width < 500 || dimensions.height < 500) {
             throw new Error('La imagen es demasiado pequeña.');
-        }
-        // return true;
+        } // return true;
     } catch(error){
         throw error;
     }
