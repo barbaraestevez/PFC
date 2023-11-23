@@ -23,6 +23,7 @@
                               <td>{{prod.price | currency:'EUR'}}</td>
                               <td><img [src]="prod.img" width="50" height="50" alt=""></td>
                               <td><i [routerLink]="['/admin/edit-product', prod._id]" class="fas fa-edit text-primary"></i></td>
+                              <!-- <td (click)="deleteProduct(prod)"><i class="fa-solid fa-trash-can text-danger"></i></td> -->
                               <td><i class="fas fa-trash text-danger"></i></td>
                           </tr>
                       </tbody>

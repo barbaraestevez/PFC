@@ -68,6 +68,10 @@ exports.updateProduct = async (req,res) => {
     }
 }
 
+// exports.delete(id: any): Observable<any> {
+//     return this._http.delete('http://localhost:3000/removeproduct/' + id);
+// }
+
 function validateBase64Image(base64String){
     try { //decodificamos la imagen de base64
         if(!base64String.startsWith('data:image/')){

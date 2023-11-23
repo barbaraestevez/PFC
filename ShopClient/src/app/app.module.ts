@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './Login/components/login/login.component';
 import { SignUpComponent } from './Login/components/sign-up/sign-up.component';
 import { ManagerModule } from './Manager/manager.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { ManagerModule } from './Manager/manager.module';
     BrowserModule,
     AppRoutingModule,
     ManagerModule,
+    BrowserAnimationsModule,
     // ReactiveFormsModule -> está declarado en el archivo "manager.module.ts"
   ],
   providers: [],
