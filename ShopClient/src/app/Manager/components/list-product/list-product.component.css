@@ -1,3 +1,6 @@
 td{
     vertical-align:middle;
 }
+.icon-pointer {
+    cursor: pointer;
+}

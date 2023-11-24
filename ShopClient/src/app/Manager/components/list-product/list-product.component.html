@@ -20,11 +20,14 @@
                               <td>{{prod.name}}</td>
                               <td>{{prod.category}}</td>
                               <td>{{prod.location}}</td>
-                              <td>{{prod.price | currency:'EUR'}}</td>
-                              <td><img [src]="prod.img" width="50" height="50" alt=""></td>
-                              <td><i [routerLink]="['/admin/edit-product', prod._id]" class="fas fa-edit text-primary"></i></td>
+                              <td>{{prod.price | currency:'EUR' }}</td>
+                              <td><img [src]="prod.img" width="50" height="50" (click)="editProduct(prod)" data-bs-target="#exampleModal">
+                                <!-- <app-modal-img [preview]="preview" [titleModal]="titleModal"></app-modal-img> -->
+                            </td>
+                              <!-- <td><i [routerLink]="['/admin/edit-product', prod._id]" class="fas fa-edit text-primary"></i></td> -->
+                              <td><i (click)="editProduct(prod)" class="fas fa-edit text-primary icon-pointer"></i></td>
                               <!-- <td (click)="deleteProduct(prod)"><i class="fa-solid fa-trash-can text-danger"></i></td> -->
-                              <td><i class="fas fa-trash text-danger"></i></td>
+                              <td><i (click)="deleteProduct(prod)" class="fas fa-trash text-danger icon-pointer"></i></td>
                           </tr>
                       </tbody>
                   </table>

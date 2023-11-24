@@ -9,10 +9,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class ProductService {
 
   //creamos una constante privada 
-  private _URL = 'http://localhost:4000/api/products';
+  private _URL = 'http://localhost:4000/api/products/';
   
-  private currentProduct = new BehaviorSubject <Product | null>(null);
-  currentProduct$ = this.currentProduct.asObservable;
+  // private currentProduct = new BehaviorSubject <Product | null>(null);
+  // currentProduct$ = this.currentProduct.asObservable;
 
   constructor(private _http:HttpClient) { }
 
@@ -24,8 +24,12 @@ export class ProductService {
     return this._http.get(this._URL);
   }
 
-  updateOneProduct(id:string, product:Product): Observable<any> {
-    return this._http.put(this._URL + id, product);
+  updateOneProduct(_id:any, product:Product): Observable<any> {
+    return this._http.put(this._URL + _id, product);
+  }
+
+  deleteProduct(_id:any) {
+    return this._http.delete<Product>(this._URL + _id)
   }
 
   /* También se podría escribir sin <Product> en el post y en el Observable poniéndolo como <any>.

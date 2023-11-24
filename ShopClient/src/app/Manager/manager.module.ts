@@ -6,6 +6,7 @@ import { ManagerRoutingModule } from './manager-routing.module';
 import { ManagerComponent } from './manager.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalImgComponent } from './components/list-product/modal-img/modal-img.component';
 
 
 
@@ -14,7 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     ManagerComponent,
     CreateProductComponent,
-    ListProductComponent
+    ListProductComponent,
+    ModalImgComponent
   ],
   imports: [
     CommonModule,

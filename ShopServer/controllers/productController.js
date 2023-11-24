@@ -42,6 +42,27 @@ exports.getAllProducts = async (req,res) => {
     }
 }
 
+exports.deleteProduct = async (req,res) => {
+    try {
+        const queryResult = await Product.findOneAndDelete({ _id: req.params.id });
+        if(queryResult){
+            res.send('Producto eliminado con éxito');
+        }
+        else {
+            throw new Error ('No se ha eliminado ningún registro');
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+    /*try {
+        const queryResult = await Product.findOneAndDelete({ _id: req.params.id });
+        const message = queryResult ? 'Producto eliminado con éxito' : 'No se ha encontrado ningún registro con ese id'
+        res.json(queryResult);
+    } catch (error) {
+        res.status(500).send('No se ha eliminado ningún registro ' + error);
+    }*/
+}
+
 exports.updateProduct = async (req,res) => {
     try {
      /*   const {name, category, location, img, price} = req.body;

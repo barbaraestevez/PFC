@@ -22,7 +22,7 @@ const routes: Routes = [
         component: CreateProductComponent
       },
       {
-        path:'edit-product/:id',
+        path:'edit-product/:product',
         component: CreateProductComponent
       }
     ]

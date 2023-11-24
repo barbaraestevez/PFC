@@ -14,7 +14,8 @@ export class CreateProductComponent implements OnInit {
   title:string = "Crear Producto";
   productForm: FormGroup;
 
-  preview!:string //la exclamación 
+  preview!:string; //la exclamación 
+  currentProduct!:Product;
 
   constructor(private _fb:FormBuilder, private _productService:ProductService, private _router:Router, private _activatedRoute:ActivatedRoute){
     this.productForm = this._fb.group({
@@ -28,7 +29,7 @@ export class CreateProductComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    
+    this.asEdit();
   }
 
   addProduct() {
@@ -42,31 +43,50 @@ export class CreateProductComponent implements OnInit {
         location: this.productForm.get('location')?.value,
         price: this.productForm.get('price')?.value,
         isLocalFile: isLocalFile,
-        img: (isLocalFile)? this.preview:this.productForm.get('img')?.value,
+        img: (isLocalFile) ? this.preview : this.productForm.get('img')?.value,
       }
-      this.createProduct(PRODUCT);
+      if(!this.currentProduct){
+        this.createProduct(PRODUCT);
+      } else {
+        this.editProduct(PRODUCT);
+      }
+      // this.createProduct(PRODUCT);
     }
   }
 
-  createProduct(product:Product) {
-    this._productService.saveProduct(product).pipe //el pipe hay que hacerlo antes de la subscripción
-    (catchError(error => { //er o error -> en este caso es lo mismo
-      if(error.status === 500) { //er o error -> en este caso es lo mismo
-        alert(error.error); //er o error -> en este caso es lo mismo
-        this.productForm.patchValue({img:''});
-        this.preview = '';
-      } else {
-        console.error('Error desconocido');
-      }
-      throw error; //er o error -> en este caso es lo mismo
+  private managedErrors(error: any) { //!
+    if (error.status === 500) {
+      alert(error.error);
+      this.productForm.patchValue({ img: '' });
+      this.preview = '';
+    } else {
+      console.error('Managed Error -> Error Desconocido');
     }
-    )
-    ).subscribe(
-      (data) => {
-        this._router.navigate(['admin','list-product'],{relativeTo:this._activatedRoute});
-      }
-        
-    )
+    // throw error;
+    return error;
+  }
+
+
+  editProduct(product: Product){ //!
+    // console.log('entro en editProduct de create-product');
+    this._productService
+    .updateOneProduct(this.currentProduct._id, product)
+    .pipe(catchError(error => this.managedErrors(error)))
+    .subscribe((data) => {
+      alert('Producto editado correctamente');
+      this._router.navigate(['admin', 'list-product'])
+    });
+  }
+
+  createProduct(product:Product) { //!
+    this._productService
+    .saveProduct(product)
+    //el pipe hay que hacerlo antes de la subscripción
+    .pipe(catchError(error => this.managedErrors(error))) 
+    .subscribe((data) => {
+      alert('Producto creado correctamente');
+        this._router.navigate(['/admin/list-product']) //this._router.navigate(['admin','list-product'])
+      });
   }
 
   setImg(event:any) {
@@ -114,5 +134,26 @@ export class CreateProductComponent implements OnInit {
     }
   }
   )
+
+  asEdit() { //!
+    this._activatedRoute.paramMap.subscribe((data) => {
+      const productSerialized = data.get('product') || '';
+
+      if (productSerialized) {
+        this.currentProduct = JSON.parse(decodeURIComponent(productSerialized));
+        this.title = 'Editar Producto';
+        this.preview = this.currentProduct.img;
+
+        this.productForm.setValue({
+          name: this.currentProduct.name,
+          category: this.currentProduct.category,
+          location: this.currentProduct.location,
+          img: this.currentProduct.img,
+          price: this.currentProduct.price,
+          isLocalFile: false
+        });
+      }
+    })
+  }
 
 }
