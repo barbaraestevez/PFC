@@ -1,97 +1,102 @@
 const Product = require('../models/Product');
-const base64ToImage = require('image-size');
+const imgLogic = require('../utils/imgLogic');
 
-exports.crearProducto = async (req,res) => {
-    console.log(req.body);
+
+exports.crearProducto = async (req, res) => {
     try {
-        let product;
-        if(req.body.isLocalFile) {
-            const base64String = req.body.img;
-            validateBase64Image(base64String);
-            console.log('La imagen es válida')
-        } else {
-            //lógica de imagen URL
-            await getMimeTypeFromUrl(req.body.img).then(
-                response => {
-                    validateMimeType(response);
-                }
-            )
-            .catch(error =>{
-                throw error;
-            })
-        }
+        let product = new Product(req.body);
 
-        product = new Product(req.body);
+        imgLogic.processImg(req).then((img) => product.img = img);
+
         await product.save();
-
-        res.send(product);
+       
+        res.json('Producto creado con éxito');
 
     } catch (error) {
-        // console.error(error)
+        console.error(error);
         res.status(500).send(error.message);
-
     }
 }
 
-exports.getAllProducts = async (req,res) => {
+exports.getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find(); //un find() sin un parámetro dentro es como si fuera un findAll
-        res.json(products)
+        const products = await Product.find();
+
+        products.forEach((element) => {
+            if (element.img.startsWith('img')) {
+                element.img = imgLogic.loadImg(element);
+            }
+        })
+
+        res.json(products);
     } catch (error) {
-        res.status(500).send('Ha habido un error');
+        res.status(500).send('Hubo un error');
     }
 }
 
-exports.deleteProduct = async (req,res) => {
+exports.deleteProduct = async (req, res) => {
     try {
-        const queryResult = await Product.findOneAndDelete({ _id: req.params.id });
-        if(queryResult){
-            res.send('Producto eliminado con éxito');
+        const queryResult = await Product.deleteOne({ _id: req.params.id }).exec();
+
+        if (queryResult.matchedCount === 0) {
+            res.status(500).send('No hay cliente');
         }
         else {
-            throw new Error ('No se ha eliminado ningún registro');
+            res.json(queryResult);
         }
-    } catch (error) {
-        res.status(500).send(error);
-    }
-    /*try {
-        const queryResult = await Product.findOneAndDelete({ _id: req.params.id });
-        const message = queryResult ? 'Producto eliminado con éxito' : 'No se ha encontrado ningún registro con ese id'
-        res.json(queryResult);
-    } catch (error) {
-        res.status(500).send('No se ha eliminado ningún registro ' + error);
-    }*/
-}
-
-exports.updateProduct = async (req,res) => {
-    try {
-     /*   const {name, category, location, img, price} = req.body;
-        let newProduct = await Product.findById(req.params.id);
-        if(!newProduct) {
-            res.status(400).json({msg:'No existe el producto'});
-        }
-        newProduct.name = name;
-        newProduct.category = category;
-        newProduct.location = location;
-        newProduct.img = img;
-        newProduct.price = price; */
-
-        /*newProduct = await Product.findOneAndUpdate({_id: req.params._id}, newProduct, {});*/
-        
-        const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, {new:true});
-        res.json(queryResult);
-
+        /*         const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }); */
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('¡Error Crítico!');
-
+        res.status(500).send('Error critico');
     }
+}
+
+exports.updateProduct = async (req, res) => {
+    try {
+        /*         const { name, category, location, img, price } = req.body;
+                let newProduct = await Product.findById(req.params.id);
+                if (!newProduct){
+                    res.status(404).json({msg:'No existe el product'});
+                }
+                newProduct.name = name;
+                newProduct.category = category;
+                newProduct.location = location;
+                newProduct.img = img;
+                newProduct.price = price; */
+            
+        let product = new Product(req.body);
+
+        imgLogic.processImg(req).then((img) => product.img = img);
+        
+        const queryResult = await Product.updateOne({ _id: req.params.id }, req.body).exec();
+        /*         let matchedResult = (queryResult.matchedCount === 0) ?
+                    'No hay productos para modificar' :
+                    'El producto se ha modificado con éxito'; */
+        if (queryResult.matchedCount === 0) {
+            res.status(404).json('No hay cliente');
+        }
+        else {
+            res.json('Producto módificado con éxito');
+        }
+        /*         const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }); */
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error critico');
+    }
+}
+
+exports.viewImg = (req, res) => {
+
+    req.json()
 }
 
 // exports.delete(id: any): Observable<any> {
 //     return this._http.delete('http://localhost:3000/removeproduct/' + id);
 // }
+
+/* esto último lo hemos pasado al archivo imgLogic.js en la carpeta utils
 
 function validateBase64Image(base64String){
     try { //decodificamos la imagen de base64
@@ -136,3 +141,4 @@ function validateMimeType(mime){
         throw new Error('La URL no es una imagen válida');
     }
 }
+*/
