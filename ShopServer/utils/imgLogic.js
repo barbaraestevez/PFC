@@ -1,9 +1,10 @@
 const base64ToImage = require('image-size');
 const fs = require('fs');
 const path = require('path');
+const filePath = (param) => path.join(path.resolve(__dirname, '..'), 'img', param);
 
 function validateBase64Image(base64String) {
-    try { //decodificamos la imagen de base64
+    try {
         if (!base64String.startsWith('data:image/')) {
             throw new Error('Formato de imagen no valido.');
         }
@@ -40,18 +41,16 @@ function getMimeTypeFromUrl(url) {
         })
 }
 
-function saveImgFile (req){
+function saveImgFile(req) {
     const base64String = req.body.img;
 
     const buffer = Buffer.from(base64String.split(',')[1], 'base64');
 
     const fileType = base64String.split(';')[0].split('/')[1];
     const fileName = `img${Date.now()}.${fileType}`;
-    const filePath = path.join(path.resolve(__dirname, '..'), 'img', fileName);
 
-    fs.writeFile(filePath, buffer, (error) => {
+    fs.writeFile(filePath(fileName), buffer, (error) => {
         if (error) {
-            console.error('Error al escribir el archivo', error);
             throw new Error('Error al guardar la imagen.');
         }
         else {
@@ -65,15 +64,15 @@ function saveImgFile (req){
 
 exports.loadImg = (product) => {
     try {
-        /*         const fileType = product.img.substring(product.img.lastIndexOf('.')+1); */
+        const img = fs.readFileSync(filePath(product.img));
 
-        const img = fs.readFileSync(path.join(path.resolve(__dirname, '..'), 'img', product.img));
         const imgBase64 = Buffer.from(img).toString('base64');
 
         return "data:image/" + product.img.split('.')[1] + ";base64," + imgBase64;
 
     } catch (error) {
-        throw error;
+        return "https://sloanreview.mit.edu/wp-content/uploads/2012/03/fail-flickr-Jez-Page-500.jpg";
+/*         throw error; */
     }
 }
 
@@ -82,7 +81,6 @@ exports.processImg = async (req) => {
     if (req.body.isLocalFile) {
         const base64String = req.body.img;
         validateBase64Image(base64String);
-        console.log('La imagen es valida');
         return saveImgFile(req);
     }
     else {
@@ -97,6 +95,15 @@ exports.processImg = async (req) => {
             .catch(error => {
                 throw error;
             })
+    }
+}
+exports.deleteImg = async (fileName) => {
+    if (fileName.startsWith('img')) {
+        fs.unlink(filePath(fileName),
+            (err) => {
+                if (err) throw new Error('No existe la ruta!');
+            }
+        );
     }
 }
 

@@ -6,10 +6,10 @@ exports.crearProducto = async (req, res) => {
     try {
         let product = new Product(req.body);
 
-        imgLogic.processImg(req).then((img) => product.img = img);
+        product.img = await imgLogic.processImg(req);
 
         await product.save();
-       
+
         res.json('Producto creado con éxito');
 
     } catch (error) {
@@ -36,61 +36,45 @@ exports.getAllProducts = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
     try {
-        const queryResult = await Product.deleteOne({ _id: req.params.id }).exec();
-
-        if (queryResult.matchedCount === 0) {
+        //const queryResult = await Product.deleteOne({ _id: req.params.id }).exec();
+        const queryResult = await Product.findOneAndDelete({ _id: req.params.id });
+       
+        if (!queryResult) {
             res.status(500).send('No hay cliente');
         }
         else {
+            imgLogic.deleteImg(queryResult.img);
             res.json(queryResult);
         }
-        /*         const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }); */
+
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error critico');
+        res.status(500).send(error.message);
     }
 }
 
 exports.updateProduct = async (req, res) => {
     try {
-        /*         const { name, category, location, img, price } = req.body;
-                let newProduct = await Product.findById(req.params.id);
-                if (!newProduct){
-                    res.status(404).json({msg:'No existe el product'});
-                }
-                newProduct.name = name;
-                newProduct.category = category;
-                newProduct.location = location;
-                newProduct.img = img;
-                newProduct.price = price; */
-            
-        let product = new Product(req.body);
+        req.body.img = await imgLogic.processImg(req);
 
-        imgLogic.processImg(req).then((img) => product.img = img);
-        
-        const queryResult = await Product.updateOne({ _id: req.params.id }, req.body).exec();
-        /*         let matchedResult = (queryResult.matchedCount === 0) ?
-                    'No hay productos para modificar' :
-                    'El producto se ha modificado con éxito'; */
-        if (queryResult.matchedCount === 0) {
-            res.status(404).json('No hay cliente');
+        const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body);
+       
+        if (!queryResult) {
+            res.status(404).json('No existe ese producto');
         }
         else {
-            res.json('Producto módificado con éxito');
+            res.json('Producto modificado con éxito');
         }
-        /*         const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }); */
-
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error critico');
+        res.status(500).send(error.message);
     }
 }
 
-exports.viewImg = (req, res) => {
-
-    req.json()
-}
+// exports.viewImg = (req, res) => {
+//   req.json();
+// };
 
 // exports.delete(id: any): Observable<any> {
 //     return this._http.delete('http://localhost:3000/removeproduct/' + id);
