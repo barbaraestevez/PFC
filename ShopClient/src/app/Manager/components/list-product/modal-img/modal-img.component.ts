@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./modal-img.component.css']
 })
 export class ModalImgComponent {
-
+//  titleModal = ;
 }

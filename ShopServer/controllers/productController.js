@@ -25,6 +25,8 @@ exports.getAllProducts = async (req, res) => {
         products.forEach((element) => {
             if (element.img.startsWith('img')) {
                 element.img = imgLogic.loadImg(element);
+                /*      PARA EL ACCESO A LA CARPETA LOCAL DE LAS IMÁGENES */
+                // element.img = 'http://localhost:4000/img/' + element.img; 
             }
         })
 
