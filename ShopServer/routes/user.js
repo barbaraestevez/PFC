@@ -4,7 +4,7 @@ const router = express.Router();
 const controllers = require('../controllers/userController');
 
 router.post('/',controllers.createUser);
-router.get('/',controllers.findUserByEmail);
+router.post('/log',controllers.findUserByEmail);
 
 
 module.exports = router;
