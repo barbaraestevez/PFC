@@ -1,39 +1,40 @@
 <div class="container mt-5">
-  <div class="row">
-      <div class="col-lg-10 offset-lg-1"> <!--/* class="col-lg-12 offset-lg-2 */-->
-          <div class="card">
-              <div class="card-body text-center">
-                  <span class="title">LISTADO DE PRODUCTOS</span>
-                  <button routerLink="/admin/create-product" class="btn btn-success float-end">NUEVO</button>
-                  <table class="table table-striped mt-3" *ngIf="listProducts.length > 0">
-                      <thead>
-                          <th scope="col">Nombre</th>
-                          <th scope="col">Categoría</th>
-                          <th scope="col">Ubicación</th>
-                          <th scope="col">Precio</th>
-                          <th scope="col">Imagen</th>
-                          <th scope="col">Editar</th>
-                          <th scope="col">Borrar</th>
-                      </thead>
-                      <tbody>
-                          <tr *ngFor="let prod of listProducts">
-                              <td>{{prod.name}}</td>
-                              <td>{{prod.category}}</td>
-                              <td>{{prod.location}}</td>
-                              <td>{{prod.price | currency:'EUR' }}</td>
-                              <td><img [src]="prod.img" width="50" height="50" (click)="editProduct(prod)" data-bs-target="#exampleModal">
-                                <!-- <app-modal-img [preview]="preview" [titleModal]="titleModal"></app-modal-img> -->
-                            </td>
-                              <!-- <td><i [routerLink]="['/admin/edit-product', prod._id]" class="fas fa-edit text-primary"></i></td> -->
-                              <td><i (click)="editProduct(prod)" class="fas fa-edit text-primary icon-pointer"></i></td>
-                              <!-- <td (click)="deleteProduct(prod)"><i class="fa-solid fa-trash-can text-danger"></i></td> -->
-                              <td><i (click)="deleteProduct(prod)" class="fas fa-trash text-danger icon-pointer"></i></td>
-                          </tr>
-                      </tbody>
-                  </table>
-                  <h5 *ngIf="listProducts.length==0">No hay productos para mostrar</h5>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="title">LISTADO DE PRODUCTOS</span>
+                    <button routerLink="/admin/create-product" class="btn btn-success float-end">NUEVO</button>
+                    <table class="table table-striped mt-3" *ngIf="listProducts.length > 0">
+                        <thead>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Ubicación</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Imagen</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Borrar</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let prod of listProducts">
+                                <td>{{prod.name}}</td>
+                                <td>{{prod.category}}</td>
+                                <td>{{prod.location}}</td>
+                                <td>{{prod.price | currency}}</td>
+                                <td><img [src]="prod.img" height="50" width="50" (click)="reSizeImg(prod)" class="icon-pointer" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                    <app-modal-img [preview]="preview" [titleModal]="titleModal" ></app-modal-img>
+                                </td>
+                                <td><i (click)="editProduct(prod)" class="fas fa-edit text-primary icon-pointer"></i> </td>
+                                <td><i (click)="deleteProduct(prod)" class="fas fa-trash text-danger icon-pointer"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5 *ngIf="listProducts.length==0">No hay productos para mostrar</h5>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Modal -->

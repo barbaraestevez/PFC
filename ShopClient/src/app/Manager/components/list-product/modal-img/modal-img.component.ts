@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-modal-img',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./modal-img.component.css']
 })
 export class ModalImgComponent {
-//  titleModal = ;
+  @Input() titleModal:string='';
+  @Input() preview:string='';
+  
+
 }

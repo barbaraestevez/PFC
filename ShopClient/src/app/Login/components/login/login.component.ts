@@ -9,10 +9,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent {
   userForm: FormGroup;
 
-  constructor(private _formBuild:FormBuilder){
+  constructor(private _formBuild: FormBuilder) {
     this.userForm = this._formBuild.group({
-      email:['',[Validators.required, Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-      password: ['',[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-ñ-Ñ])[a-zA-Z\d@$!%*?&._-ñ-Ñ]{8,}$/)]]
+      email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,}$/)]]
     })
   }
 
@@ -20,9 +20,12 @@ export class LoginComponent {
     console.log(this.userForm);
   }
 
-  // validateParams(param) {
+  validateParams(paramName: string, mode = true) {
+    return (mode) 
+      ?
+      this.userForm.get(paramName)?.hasError('required') && this.userForm.get(paramName)?.touched 
+      :
+      this.userForm.get(paramName)?.hasError('pattern') && this.userForm.get(paramName)?.dirty;
 
-  // }
-
+  }
 }
-
