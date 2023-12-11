@@ -7,6 +7,8 @@ import { ManagerComponent } from './manager.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalImgComponent } from './components/list-product/modal-img/modal-img.component';
+import { HeaderComponent } from '../dashboard/footer/header/header.component';
+import { FooterComponent } from '../dashboard/footer/footer.component';
 
 
 
@@ -16,7 +18,9 @@ import { ModalImgComponent } from './components/list-product/modal-img/modal-img
     ManagerComponent,
     CreateProductComponent,
     ListProductComponent,
-    ModalImgComponent
+    ModalImgComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,

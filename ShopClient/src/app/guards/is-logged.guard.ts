@@ -5,5 +5,6 @@ import { map } from 'rxjs';
 
 export const isLoggedGuard: CanMatchFn = (route, segments) => {
   const router = inject(Router);
-  return inject(AuthService).isLoggedIn$.pipe(map((isLogged) => isLogged || router.createUrlTree([''])));
+  return inject(AuthService).isLoggedIn$.pipe(
+    map((isLogged) => isLogged || router.createUrlTree([''])));
 };

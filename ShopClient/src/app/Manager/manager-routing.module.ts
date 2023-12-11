@@ -4,6 +4,7 @@ import { CreateProductComponent } from './components/create-product/create-produ
 import { ListProductComponent } from './components/list-product/list-product.component';
 import { ManagerComponent } from './manager.component';
 import { ProductService } from '../services/product.service';
+import { hasRoleGuard } from '../guards/has-role.guard';
 
 
 
@@ -15,15 +16,18 @@ const routes: Routes = [
       {
         path:'list-product',
         component: ListProductComponent,
-        resolve: { productList: () => inject(ProductService).getAllProducts()}
+        resolve: { productList: () => inject(ProductService).getAllProducts()},
+        //canMatch:[hasRoleGuard(['Admin', 'Customer'])]
       },
       {
         path:'create-product',
-        component: CreateProductComponent
+        component: CreateProductComponent,
+       // canMatch:[hasRoleGuard(['Admin', 'Employee'])]
       },
       {
         path:'edit-product/:product',
-        component: CreateProductComponent
+        component: CreateProductComponent,
+       // canMatch:[hasRoleGuard(['Admin'])]
       }
     ]
   }

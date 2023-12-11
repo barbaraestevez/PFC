@@ -35,15 +35,13 @@ exports.createUser = async (req, res) => {
 exports.findUserByEmail = async (req, res) => {
     const { collection, client } = connectCollection('shop', 'Users');
     try {
-        const user = await collection.findOne({email:req.body.email},{ projection: {username: 1, password: 1, _id: 0} });
+        const user = await collection.findOne({email:req.body.email});
 
-        if(!user) { res.json ({ msg: 'No existe usuario con ese email.', success: false }); }
-
-        if (user.password === req.body.password) {
+        if (user && user.password === req.body.password) {
             res.json ({ msg: 'Usuario logueado con éxito', success: true, user: user });
         }
         else {
-            res.json ({ msg: 'El password es incorrecto.', success: false });
+            res.json ({ msg: 'El email/password es incorrecto.', success: false });
         }
 
       //  res.json(user);

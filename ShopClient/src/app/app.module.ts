@@ -8,6 +8,8 @@ import { SignUpComponent } from './Login/components/sign-up/sign-up.component';
 import { ManagerModule } from './Manager/manager.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HeaderComponent } from './dashboard/footer/header/header.component';
+import { FooterComponent } from './dashboard/footer/footer.component';
 
 
 @NgModule({
