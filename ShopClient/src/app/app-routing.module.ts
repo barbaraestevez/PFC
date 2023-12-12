@@ -27,7 +27,16 @@ const routes: Routes = [
       import('./Manager/manager.module').then(
         (m) => m.ManagerModule
       ),
-    canMatch:[isLoggedGuard, hasRoleGuard(['Admin', 'Employee'])],
+    canMatch:[hasRoleGuard(['Admin', 'Employee']), isLoggedGuard],
+   // canMatch:[isLoggedGuard, hasRoleGuard(['Admin', 'Employee'])],
+  },
+  {
+    path: 'shop',
+    loadChildren: () =>
+      import('./Shop/shop.module').then(
+        (m) => m.ShopModule
+      ),
+   canMatch:[isLoggedGuard],
   },
   {
     path:'**',

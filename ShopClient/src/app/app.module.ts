@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Login/components/login/login.component';
 import { SignUpComponent } from './Login/components/sign-up/sign-up.component';
 import { ManagerModule } from './Manager/manager.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from './dashboard/footer/header/header.component';
-import { FooterComponent } from './dashboard/footer/footer.component';
+import { ShopModule } from './Shop/shop.module';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -20,10 +19,11 @@ import { FooterComponent } from './dashboard/footer/footer.component';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule, // ReactiveFormsModule -> está declarado en el archivo "manager.module.ts"
     AppRoutingModule,
     ManagerModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule // ReactiveFormsModule -> está declarado en el archivo "manager.module.ts"
+    ShopModule,
+ //   BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

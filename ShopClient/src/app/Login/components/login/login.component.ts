@@ -32,7 +32,8 @@ export class LoginComponent {
       }
       else {
         console.log(resp.msg);
-        this._router.navigate(['admin','create-product'], { relativeTo: this._activatedRoute });
+        this._router.navigate(['shop','home'], { relativeTo: this._activatedRoute });
+       // this._router.navigate(['admin','create-product'], { relativeTo: this._activatedRoute });
       }
     })
   }
