@@ -12,8 +12,15 @@
                             <th scope="col">Ubicación</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Imagen</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Borrar</th>
+                            <ng-template [ngRole]="['Employee','Admin']">
+                                <th scope="col">Editar</th>
+                                <th scope="col">Borrar</th>
+                            </ng-template>
+                            <ng-template [ngRole]="['Seller']">
+                                <th scope="col">Stock</th>
+                                <th scope="col">% Benefit</th>
+                                <th scope="col">Añadir</th>
+                            </ng-template>
                         </thead>
                         <tbody>
                             <tr *ngFor="let prod of listProducts">
@@ -25,8 +32,15 @@
                                         data-bs-target="#exampleModal">
                                     <app-modal-img [preview]="preview" [titleModal]="titleModal" ></app-modal-img>
                                 </td>
-                                <td><i (click)="editProduct(prod)" class="fas fa-edit text-primary icon-pointer"></i> </td>
-                                <td><i (click)="deleteProduct(prod)" class="fas fa-trash text-danger icon-pointer"></i></td>
+                               <ng-template [ngRole]="['Employee','Admin']">
+                                    <td><i (click)="editProduct(prod)" class="fas fa-edit text-primary icon-pointer"></i> </td>
+                                    <td><i (click)="deleteProduct(prod)" class="fas fa-trash text-danger icon-pointer"></i></td>
+                                </ng-template>
+                                <ng-template [ngRole]="['Seller']">
+                                    <td><input [(ngModel)]="productStock" class="input" placeholder="stock" type="number" min="1" max="10" name="stock" /></td>
+                                    <td><input [(ngModel)]="percentBenefit" class="input" placeholder="%" type="number" min="10" max="20" name="percentBenefit" /></td>
+                                    <td><i (click)="addProductoToSalesCorner(prod)" class="fa-solid fa-circle-plus text-secondary icon-pointer"></i></td>
+                                </ng-template>
                             </tr>
                         </tbody>
                     </table>

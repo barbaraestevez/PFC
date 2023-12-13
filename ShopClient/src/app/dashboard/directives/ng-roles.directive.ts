@@ -10,17 +10,19 @@ export class NgRolesDirective implements OnInit, OnDestroy {
 
   @Input('ngRoles') allowedRoles?: Role[];
   private sub?: Subscription;
-  private viewContainerRef: ViewContainerRef;
-  // private createEmbeddedView: CreateEmbeddedView<any>;
-  private templateRef: TemplateRef<any>;
 
-  constructor(private _auth:AuthService) {}
+
+  constructor(
+    private _auth:AuthService,
+    private viewContainerRef: ViewContainerRef,
+    private templateRef: TemplateRef<any>,
+    ) { }
    
   ngOnInit(): void{
       this.sub= this._auth.user$.pipe(
         map((user) => Boolean(this.allowedRoles?.includes(user?.role || 'Customer'))),
         tap((ifRole) => ifRole ? 
-        this.viewContainerRef?.createEmbeddedView(this.templateRef?) 
+        this.viewContainerRef.createEmbeddedView(this.templateRef) 
         : 
         this.viewContainerRef?.clear()
         )

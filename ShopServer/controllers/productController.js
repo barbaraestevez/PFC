@@ -1,9 +1,27 @@
 const Product = require('../models/Product');
 const imgLogic = require('../utils/imgLogic');
+const authLogic = require('../utils/authLogic');
+const { collection, client } = connectCollection('shop', 'Users');
 
 
 exports.crearProducto = async (req, res) => {
     try {
+        const authHeader = req.headers.authorization;
+        if( !authHeader || !authHeader.startsWith('Basic ') ) {
+            res.status(404).send('Credenciales no proporcionadas o formato incorrecto.');
+            return;
+        }
+        // const encodedCredentials = authHeader.substring('Basic '.length);
+        // const decodedCredentials = Buffer.from(encodedCredentials,'base64').toString('utf8');
+        // const [ email, password ] = decodedCredentials.split(':');
+
+        //const user = await collection.findOne((email:email, password:password));
+
+       // return user && allowedRoles.includes(user.role);
+
+        // console.log('Usuario: ' + email);
+        // console.log('Password: ' + password);
+
         let product = new Product(req.body);
 
         product.img = await imgLogic.processImg(req);
@@ -16,6 +34,9 @@ exports.crearProducto = async (req, res) => {
         console.error(error);
         res.status(500).send(error.message);
     }
+    // finally {
+    //     await client.close()
+    // }
 }
 
 exports.getAllProducts = async (req, res) => {
