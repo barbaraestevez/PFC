@@ -25,13 +25,14 @@ export class LoginComponent {
   }
 
   login() {
+    console.log(this.userForm.value);
     this._auth.login(this.userForm.value as UserCredentials)
     .subscribe( resp => {
       if(!resp.success) {
         alert (resp.msg);
       }
       else {
-        console.log(resp.msg);
+       // console.log(resp.msg);
         this._router.navigate(['shop','home'], { relativeTo: this._activatedRoute });
        // this._router.navigate(['admin','create-product'], { relativeTo: this._activatedRoute });
       }

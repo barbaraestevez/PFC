@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ShopModule } from './Shop/shop.module';
 import { AppRoutingModule } from './app-routing.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 
 @NgModule({
@@ -25,7 +27,13 @@ import { AppRoutingModule } from './app-routing.module';
     ShopModule,
  //   BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi:true
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

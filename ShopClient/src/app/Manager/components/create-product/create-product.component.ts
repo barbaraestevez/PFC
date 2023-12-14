@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { Product } from 'src/app/models/product';
 import { Role } from 'src/app/models/roles.type';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
 //import * as Swal from 'sweetalert2';
 import Swal from 'sweetalert2';
@@ -21,13 +22,15 @@ export class CreateProductComponent implements OnInit {
   preview!: string;
 
   currentProduct!: Product; //?
+  private credentials!:String;
 
   constructor
     (
       private _fb: FormBuilder,
       private _productService: ProductService,
       private _router: Router,
-      private _activatedRoute: ActivatedRoute //?
+      private _activatedRoute: ActivatedRoute, //?
+      private _auth:AuthService
     ) {
 
     this.productForm = this._fb.group({
@@ -43,6 +46,7 @@ export class CreateProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.asEdit();
+   // this._auth.getCredentials().subscribe((credentials))
   }
 
   addProduct() {

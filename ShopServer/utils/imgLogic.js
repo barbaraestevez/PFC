@@ -94,11 +94,12 @@ exports.processImg = async (req) => {
             )
             .catch(error => {
                 throw error;
-            })
+            });
+            return req.body.img
     }
 }
 exports.deleteImg = async (fileName) => {
-    if (fileName.startsWith('img')) {
+    if (fileName.startsWith('img') && fs.existsSync(filePath(fileName))) {
         fs.unlink(filePath(fileName),
             (err) => {
                 if (err) throw new Error('No existe la ruta!');

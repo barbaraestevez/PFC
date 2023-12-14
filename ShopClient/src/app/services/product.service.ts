@@ -12,7 +12,7 @@ export class ProductService {
   constructor(private _http: HttpClient) { }
 
   saveProduct(product: Product): Observable<Product> {
-    return this._http.post<Product>(this._URL, product);
+    return this._http.post<Product>(this._URL, product); //, this.addHeader(credentials)
   }
 
   getAllProducts(): Observable<any> {
@@ -25,4 +25,12 @@ export class ProductService {
   deleteProduct(_id:any): Observable<any> { //!
     return this._http.delete(this._URL + _id);
   }
+
+  /*addHeader(credentials:string) {
+    return {
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-type': 'application/json'
+      }}
+},withCredentials: true*/
 }

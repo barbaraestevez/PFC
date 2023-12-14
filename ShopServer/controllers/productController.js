@@ -1,42 +1,36 @@
 const Product = require('../models/Product');
 const imgLogic = require('../utils/imgLogic');
 const authLogic = require('../utils/authLogic');
-const { collection, client } = connectCollection('shop', 'Users');
 
-
+// Controlador para crear un nuevo producto
 exports.crearProducto = async (req, res) => {
     try {
-        const authHeader = req.headers.authorization;
-        if( !authHeader || !authHeader.startsWith('Basic ') ) {
-            res.status(404).send('Credenciales no proporcionadas o formato incorrecto.');
-            return;
+
+        if (await authLogic.checkRBAC(req, ['Admin', 'Employee'])) {
+
+            let product = new Product(req.body);
+    
+            // Procesa la imagen asociada al producto y actualiza el campo 'img' en el producto
+            product.img = await imgLogic.processImg(req);
+    
+            // Guarda el producto en la base de datos
+            await product.save();
+    
+            // Responde con un mensaje de éxito en formato JSON
+            res.json('Producto creado con éxito');
         }
-        // const encodedCredentials = authHeader.substring('Basic '.length);
-        // const decodedCredentials = Buffer.from(encodedCredentials,'base64').toString('utf8');
-        // const [ email, password ] = decodedCredentials.split(':');
+        else{
+            res.json('No tienes los permisos adecuados.');
+        }
 
-        //const user = await collection.findOne((email:email, password:password));
 
-       // return user && allowedRoles.includes(user.role);
-
-        // console.log('Usuario: ' + email);
-        // console.log('Password: ' + password);
-
-        let product = new Product(req.body);
-
-        product.img = await imgLogic.processImg(req);
-
-        await product.save();
-
-        res.json('Producto creado con éxito');
+        // Crea una nueva instancia de Product con los datos del cuerpo de la solicitud
 
     } catch (error) {
+        // Manejo de errores: Imprime el error en la consola y responde con un código de estado 500 y el mensaje de error
         console.error(error);
         res.status(500).send(error.message);
     }
-    // finally {
-    //     await client.close()
-    // }
 }
 
 exports.getAllProducts = async (req, res) => {
@@ -45,7 +39,8 @@ exports.getAllProducts = async (req, res) => {
 
         products.forEach((element) => {
             if (element.img.startsWith('img')) {
-                element.img = imgLogic.loadImg(element);
+                element.img = 'http://localhost:4000/img/' + element.img;
+               // element.img = imgLogic.loadImg(element);
                 /*      PARA EL ACCESO A LA CARPETA LOCAL DE LAS IMÁGENES */
                 // element.img = 'http://localhost:4000/img/' + element.img; 
             }
@@ -57,39 +52,57 @@ exports.getAllProducts = async (req, res) => {
     }
 }
 
+// Controlador para eliminar un producto por su ID
 exports.deleteProduct = async (req, res) => {
     try {
-        //const queryResult = await Product.deleteOne({ _id: req.params.id }).exec();
-        const queryResult = await Product.findOneAndDelete({ _id: req.params.id });
-       
-        if (!queryResult) {
-            res.status(500).send('No hay cliente');
+        if (await authLogic.checkRBAC(req, ['Admin', 'Employee'])) {
+            
+            // Busca y elimina el producto por su ID
+            const queryResult = await Product.findOneAndDelete({ _id: req.params.id });
+    
+            // Si el producto no existe, responde con un código de estado 500 y un mensaje
+            if (!queryResult) {
+                res.status(500).send('No hay cliente');
+            } else {
+                // Si el producto se eliminó con éxito, elimina también la imagen asociada y responde con el producto eliminado
+                imgLogic.deleteImg(queryResult.img);
+                res.json(queryResult);
+            }
+        } else {
+            res.json('No tienes permisos.');
         }
-        else {
-            imgLogic.deleteImg(queryResult.img);
-            res.json(queryResult);
-        }
-
 
     } catch (error) {
+        // Manejo de errores: Imprime el error en la consola y responde con un código de estado 500 y el mensaje de error
         console.log(error);
         res.status(500).send(error.message);
     }
 }
 
+// Controlador para actualizar un producto por su ID
 exports.updateProduct = async (req, res) => {
     try {
-        req.body.img = await imgLogic.processImg(req);
-
-        const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body);
-       
-        if (!queryResult) {
-            res.status(404).json('No existe ese producto');
-        }
-        else {
-            res.json('Producto modificado con éxito');
+        if (await authLogic.checkRBAC(req, ['Admin', 'Employee'])) {
+            // Procesa la nueva imagen asociada al producto y actualiza el campo 'img' en el producto
+            req.body.img = await imgLogic.processImg(req);
+    
+            // Busca y actualiza el producto por su ID
+            const queryResult = await Product.findOneAndUpdate({ _id: req.params.id }, req.body);
+    
+            // Si el producto no existe, responde con un código de estado 404 y un mensaje
+            if (!queryResult) {
+                res.status(404).json('No existe ese producto');
+            } else {
+                // Si el producto se actualizó con éxito, elimina la imagen antigua asociada y responde con un mensaje de éxito
+                imgLogic.deleteImg(queryResult.img);
+                res.json('Producto modificado con éxito');
+            }
+            
+        } else {
+            res.json('No tienes los permisos necesarios.')
         }
     } catch (error) {
+        // Manejo de errores: Imprime el error en la consola y responde con un código de estado 500 y el mensaje de error
         console.log(error);
         res.status(500).send(error.message);
     }
