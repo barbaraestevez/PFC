@@ -7,6 +7,7 @@ import { CreateProductComponent } from '../Manager/components/create-product/cre
 import { ShopComponent } from '../Shop/shop.component';
 import { HomeComponent } from '../Shop/components/home/home.component';
 import { CartComponent } from '../Shop/components/cart/cart.component';
+import { hasRoleGuard } from '../guards/has-role.guard';
 
 
 // Define las rutas del módulo
@@ -24,7 +25,7 @@ const routes: Routes = [
       {
         path: 'create-product', // Ruta para crear un nuevo producto
         component: CreateProductComponent, // Componente asociado a la ruta
-/*         canMatch: [hasRoleGuard(['Admin'])] */
+        canActivate: [hasRoleGuard(['Admin', 'Employee'])]
       },
       {
         path: 'edit-product/:product', // Ruta para editar un producto existente

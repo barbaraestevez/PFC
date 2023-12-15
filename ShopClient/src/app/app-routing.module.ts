@@ -15,20 +15,13 @@ const routes: Routes = [
     component: SignUpComponent
   },
   {
-    path:'shop',
-    loadChildren: () => 
-      import('./Manager/manager.module').then(
-        (m) => m.ManagerModule
-      )
-  },
-  {
     path: 'admin',
     loadChildren: () =>
       import('./Manager/manager.module').then(
         (m) => m.ManagerModule
       ),
-    canMatch:[hasRoleGuard(['Admin', 'Employee']), isLoggedGuard],
-   // canMatch:[isLoggedGuard, hasRoleGuard(['Admin', 'Employee'])],
+    //canMatch:[hasRoleGuard(['Admin', 'Employee']), isLoggedGuard],
+    canMatch:[isLoggedGuard, hasRoleGuard(['Admin', 'Employee'])],
   },
   {
     path: 'shop',

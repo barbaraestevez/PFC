@@ -11,7 +11,7 @@ import { FooterComponent } from './components/footer/footer.component';
   declarations: [
     FooterComponent,
     HeaderComponent,
-    NgRolesDirective,
+    NgRolesDirective
   ],
   imports: [
     CommonModule,
@@ -19,7 +19,8 @@ import { FooterComponent } from './components/footer/footer.component';
   ],
   exports:[
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    NgRolesDirective
   ]
 })
 export class DashboardModule { }

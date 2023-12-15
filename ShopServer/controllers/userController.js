@@ -32,6 +32,10 @@ exports.findUserByEmail = async (req, res) => {
   const { collection, client } = connectCollection("shop", "Users");
   try {
     const user = await collection.findOne({ email: req.body.email });
+    // console.log(req.body);
+    // console.log(JSON.stringify(user));
+    // console.log(req.body.password);
+    // console.log(JSON.stringify(password));
 
     if (user && user.password === req.body.password) {
       res.json({

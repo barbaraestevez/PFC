@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
   
 
     request = request.clone({headers: request.headers.append('Authorization','Basic '+this._auth.getCredentials())})
-    return next.handle(request);
+    return next.handle(request).pipe(tap((resp) => console.log("texto que sale "+resp))); //
   }
 }
 

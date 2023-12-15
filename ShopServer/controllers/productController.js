@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const connectCollection = require("../config/mongo");
 const imgLogic = require('../utils/imgLogic');
 const authLogic = require('../utils/authLogic');
 
@@ -54,12 +55,20 @@ exports.getAllProducts = async (req, res) => {
 
 // Controlador para eliminar un producto por su ID
 exports.deleteProduct = async (req, res) => {
+    const { collection, client } = connectCollection("shop", "products");
     try {
         if (await authLogic.checkRBAC(req, ['Admin', 'Employee'])) {
             
             // Busca y elimina el producto por su ID
-            const queryResult = await Product.findOneAndDelete({ _id: req.params.id });
+            //Versión Mongoose
+            /*const queryResult = await Product.findOneAndDelete({ _id: req.params.id });*/
     
+            //Versión MongoDB
+            const img = await collection.findOne({_id:req.params.id},{img:1, _id:0}) ;
+            const queryResult = await collection.bulkWrite([
+                {deleteOne:{filter:{_id:req.params.id}}},{updateMany:{filter:{}}}])
+            
+
             // Si el producto no existe, responde con un código de estado 500 y un mensaje
             if (!queryResult) {
                 res.status(500).send('No hay cliente');
@@ -74,8 +83,10 @@ exports.deleteProduct = async (req, res) => {
 
     } catch (error) {
         // Manejo de errores: Imprime el error en la consola y responde con un código de estado 500 y el mensaje de error
-        console.log(error);
+        //console.log(error);
         res.status(500).send(error.message);
+    } finally {
+        await client.close();
     }
 }
 
@@ -113,7 +124,7 @@ exports.updateProduct = async (req, res) => {
 // };
 
 // exports.delete(id: any): Observable<any> {
-//     return this._http.delete('http://localhost:3000/removeproduct/' + id);
+//     return this._http.delete('http://localhost:4000/removeproduct/' + id);
 // }
 
 /* esto último lo hemos pasado al archivo imgLogic.js en la carpeta utils

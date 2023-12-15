@@ -1,4 +1,3 @@
-import { CanActivateChildFn } from '@angular/router';
 import { Role } from '../models/roles.type';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';

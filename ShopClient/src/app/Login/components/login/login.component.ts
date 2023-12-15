@@ -25,18 +25,18 @@ export class LoginComponent {
   }
 
   login() {
-    console.log(this.userForm.value);
     this._auth.login(this.userForm.value as UserCredentials)
-    .subscribe( resp => {
-      if(!resp.success) {
-        alert (resp.msg);
-      }
-      else {
-       // console.log(resp.msg);
-        this._router.navigate(['shop','home'], { relativeTo: this._activatedRoute });
-       // this._router.navigate(['admin','create-product'], { relativeTo: this._activatedRoute });
-      }
-    })
+    .subscribe((resp) => {
+    //.subscribe(resp => {
+    if (!resp.success) {
+      alert("Error al iniciar sesión: " + resp.msg);
+    } else {
+      this._router.navigate(['shop', 'home'], { relativeTo: this._activatedRoute });
+    }
+  }, error => {
+    console.error("Error en la solicitud de inicio de sesión:", error);
+    alert("Error en la solicitud de inicio de sesión. Consulta la consola para más detalles.");
+  });
   }
 
   validateParams(paramName: string, mode = true) {

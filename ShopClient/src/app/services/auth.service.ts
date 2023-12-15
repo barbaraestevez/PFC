@@ -34,7 +34,12 @@ export class AuthService {
         })
       )
     }
+
+    
     getCredentials() {
-    return this._credentials;
+      return this._credentials;
     }
-}
+  }
+  // signUp(user:User) {
+  //   return this._http.post(this._url,user);
+  // }

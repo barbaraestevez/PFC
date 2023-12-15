@@ -5,7 +5,7 @@ console.log("Lo primero de todo, ¿cómo están esos máquinas?");
 const express = require('express');
 const connectDB = require ('./config/db');
 const User = require('./models/User');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const cors = require('cors');
 
 const app = express();
@@ -31,5 +31,5 @@ User.createSchema();
 })*/
 
 app.listen(PORT,()=>{
-    console.log('El servidor está corriendo correctamente');
+    console.log('El servidor está corriendo correctamente '+ PORT);
 })
