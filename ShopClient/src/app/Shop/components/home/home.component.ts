@@ -10,8 +10,8 @@ export class HomeComponent {
 
   username?: string;
 
-  constructor (private _auth:AuthService) {
+  constructor(private _auth: AuthService) {
     this._auth.user$.subscribe((user) => this.username = user?.username);
   }
-  
+
 }

@@ -8,16 +8,17 @@ import { DashboardRoutingModule } from '../dashboard/dashboard-routing.module';
 
 
 
+
 @NgModule({
   declarations: [
     ShopComponent,
     HomeComponent,
-    CartComponent
+    CartComponent,
   ],
   imports: [
     CommonModule,
     DashboardModule,
-    DashboardRoutingModule,
+    DashboardRoutingModule
   ]
 })
 export class ShopModule { }

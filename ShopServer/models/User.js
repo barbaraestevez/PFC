@@ -1,7 +1,8 @@
 const { MongoClient } = require("mongodb");
 require('dotenv').config();
+const connectCollection = require('../config/mongo')
 
-const client = new MongoClient(process.env.DB_MONGO);
+const { collection, client } = connectCollection('shop', 'Users');
 
 exports.createSchema = async () => {
     try {

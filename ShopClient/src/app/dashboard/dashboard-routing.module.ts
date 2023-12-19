@@ -25,7 +25,7 @@ const routes: Routes = [
       {
         path: 'create-product', // Ruta para crear un nuevo producto
         component: CreateProductComponent, // Componente asociado a la ruta
-        canActivate: [hasRoleGuard(['Admin', 'Employee'])]
+        canActivate: [hasRoleGuard(['Admin','Employee'])]
       },
       {
         path: 'edit-product/:product', // Ruta para editar un producto existente

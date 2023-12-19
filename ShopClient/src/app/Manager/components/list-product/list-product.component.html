@@ -1,3 +1,42 @@
+<!-- ste código representa una interfaz de usuario para gestionar productos, 
+    permitiendo la creación, edición y eliminación de productos, así como la visualización
+     de detalles adicionales mediante un modal. -->
+
+
+<!-- RESUMEN
+1.- Estructura HTML:
+
+Se utiliza la clase "container" de Bootstrap para limitar el ancho del contenido.
+Se crea una tarjeta (card) centrada en la página para contener el listado de productos.
+Se presenta un botón "NUEVO" que redirige a la ruta de creación de productos (/admin/create-product).
+Se utiliza una tabla (table) para mostrar el listado de productos.
+
+
+2.- Encabezado de la Tabla:
+Se define el encabezado de la tabla con columnas para el nombre, categoría, ubicación, precio, imagen, editar y borrar.
+
+
+3.- Iteración sobre Productos:
+Se utiliza la directiva *ngFor para iterar sobre la lista de productos (listProducts).
+Se muestran los detalles de cada producto en filas de la tabla.
+Se utiliza la tubería (|) para formatear el precio como una moneda.
+
+4 .-Imágenes y Modales:
+Se muestra una miniatura de la imagen de cada producto en la columna de imagen.
+Al hacer clic en la imagen, se abre un modal (data-bs-target="#exampleModal") con una vista previa más grande de la imagen.
+
+5.- Botones de Edición y Eliminación:
+Se incluyen íconos de lápiz (fa-edit) y papelera (fa-trash) que, al hacer clic, llaman a los métodos editProduct(prod) y deleteProduct(prod) respectivamente.
+
+6.- Mensajes Condicionales:
+Se muestra un mensaje "No hay productos para mostrar" si la lista de productos está vacía.
+
+7 .- Componente de Modal:
+Al hacer clic en la imagen de un producto, se utiliza el componente <app-modal-img> para mostrar una vista previa más grande de la imagen dentro de un modal.
+
+
+-->
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
@@ -12,11 +51,11 @@
                             <th scope="col">Ubicación</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Imagen</th>
-                            <ng-template [ngRole]="['Employee','Admin']">
+                            <ng-template [ngRoles]="['Employee','Admin']">
                                 <th scope="col">Editar</th>
                                 <th scope="col">Borrar</th>
                             </ng-template>
-                            <ng-template [ngRole]="['Seller']">
+                            <ng-template [ngRoles]="['Seller']">
                                 <th scope="col">Stock</th>
                                 <th scope="col">% Benefit</th>
                                 <th scope="col">Añadir</th>
@@ -28,18 +67,30 @@
                                 <td>{{prod.category}}</td>
                                 <td>{{prod.location}}</td>
                                 <td>{{prod.price | currency}}</td>
-                                <td><img [src]="prod.img" height="50" width="50" (click)="reSizeImg(prod)" class="icon-pointer" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                    <app-modal-img [preview]="preview" [titleModal]="titleModal" ></app-modal-img>
+                                <td><img [src]="prod.img" height="50" width="50" (click)="reSizeImg(prod)"
+                                        class="icon-pointer" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <app-modal-img [preview]="preview" [titleModal]="titleModal"></app-modal-img>
                                 </td>
-                               <ng-template [ngRole]="['Employee','Admin']">
-                                    <td><i (click)="editProduct(prod)" class="fas fa-edit text-primary icon-pointer"></i> </td>
-                                    <td><i (click)="deleteProduct(prod)" class="fas fa-trash text-danger icon-pointer"></i></td>
+                                <ng-template [ngRoles]="['Employee','Admin']">
+                                    <td><i (click)="editProduct(prod)"
+                                            class="fas fa-edit text-primary icon-pointer"></i>
+                                    </td>
+                                    <td><i (click)="deleteProduct(prod)"
+                                            class="fas fa-trash text-danger icon-pointer"></i>
+                                    </td>
                                 </ng-template>
-                                <ng-template [ngRole]="['Seller']">
-                                    <td><input [(ngModel)]="productStock" class="input" placeholder="stock" type="number" min="1" max="10" name="stock" /></td>
-                                    <td><input [(ngModel)]="percentBenefit" class="input" placeholder="%" type="number" min="10" max="20" name="percentBenefit" /></td>
-                                    <td><i (click)="addProductoToSalesCorner(prod)" class="fa-solid fa-circle-plus text-secondary icon-pointer"></i></td>
+                                <ng-template [ngRoles]="['Seller']">
+                                    <td>
+                                        <input #productStock class="input" type="number" min="1" max="10" name="stock"
+                                            value="1" />
+                                    </td>
+                                    <td>
+                                        <input #percentBenefit class="input" type="number" min="10" max="20"
+                                            name="percentBenefit" value="10" />
+                                    </td>
+                                    <td><i (click)="addProductToSalesCorner(prod,percentBenefit.value,productStock.value)"
+                                            class="fa-solid fa-circle-plus text-success icon-pointer"></i>
+                                    </td>
                                 </ng-template>
                             </tr>
                         </tbody>

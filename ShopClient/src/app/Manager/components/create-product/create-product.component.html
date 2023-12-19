@@ -1,3 +1,8 @@
+<!-- En resumen, este código crea un formulario reutilizable y dinámico en Angular que se ajusta según la elección 
+    del usuario para cargar una imagen local o proporcionar una URL, 
+    y muestra una vista previa de la imagen seleccionada. Además, realiza la validación 
+    del formulario y proporciona mensajes de error en consecuencia. -->
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-6 offset-lg-3">
@@ -20,14 +25,16 @@
                                     {{(productForm.value.isLocalFile)?'Subir imagen desde local':'Copiar URL de imagen'}}
                                 </label>
                             </div>
-                            <input [type]="(productForm.value.isLocalFile)? 'file':'text'" formControlName="img" class="form-control form-control-lg"
-                                placeholder="URL de la imagen" (change)="setImg($event)">
+                            <input [type]="(productForm.value.isLocalFile)? 'file':'text'" formControlName="img"
+                                class="form-control form-control-lg" placeholder="URL de la imagen"
+                                (change)="setImg($event)">
                             <div class="text-danger" *ngIf="validateInput('img')">
                                 <span>La imagen <strong> es obligatoria </strong></span>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <button type="button" routerLink="/admin/list-product" class="btn btn-secondary btn-lg float-start">VOLVER</button>
+                            <button type="button" routerLink="/admin/list-product"
+                                class="btn btn-secondary btn-lg float-start">VOLVER</button>
                             <button type="submit" [disabled]="productForm.invalid"
                                 class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>

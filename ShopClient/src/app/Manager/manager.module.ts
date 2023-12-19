@@ -5,11 +5,9 @@ import { ListProductComponent } from './components/list-product/list-product.com
 import { ManagerComponent } from './manager.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ModalImgComponent } from './components/list-product/modal-img/modal-img.component';
+import { ModalImgComponent } from './components/list-product/modal-img/modal-img.component'
 import { DashboardModule } from '../dashboard/dashboard.module';
 import { DashboardRoutingModule } from '../dashboard/dashboard-routing.module';
-
-
 
 
 @NgModule({
@@ -25,7 +23,7 @@ import { DashboardRoutingModule } from '../dashboard/dashboard-routing.module';
     ReactiveFormsModule,
     HttpClientModule,
     DashboardModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
   ]
 })
 export class ManagerModule { }

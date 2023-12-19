@@ -6,16 +6,8 @@
   "scripts": {
     "dev": "nodemon ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/barbaraestevez/PFC.git"
-  },
-  "author": "Bárbara Estévez Simonet",
+  "author": "Richard Nava",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/barbaraestevez/PFC/issues"
-  },
-  "homepage": "https://github.com/barbaraestevez/PFC#readme",
   "devDependencies": {
     "nodemon": "^3.0.1"
   },
