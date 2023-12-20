@@ -49,3 +49,19 @@ exports.findUserByEmail = async (req, res) => {
         await client.close()
     }
 }
+
+exports.addSalesByUser = async (req,res) => {
+    const { collection, client } = connectCollection('shop', 'Users');
+    try {
+        //request.body.obj => {_id, [{product_id, stock, profit}...]};
+        const user = await collection.findOne({ email: req.body.email });
+        const user = await collection.updateOne();
+
+    }
+    catch (error) {
+        res.status(403).json({ msg: error.message, success: false });
+    }
+    finally {
+        await client.close()
+    }
+}
