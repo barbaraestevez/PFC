@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const connectCollection = require('../config/mongo')
 
 
@@ -54,8 +55,12 @@ exports.addSalesByUser = async (req,res) => {
     const { collection, client } = connectCollection('shop', 'Users');
     try {
         //request.body.obj => {_id, [{product_id, stock, profit}...]};
-        const user = await collection.findOne({ email: req.body.email });
-        const user = await collection.updateOne();
+       // const user = await collection.findOne({ email: req.body.email });
+       const { userId, productList } = req.body;
+       const filter = new ObjectId(userId);
+       const update = { $set: {store: productList} };
+
+       const user = await collection.updateOne(filter,update);
 
     }
     catch (error) {
