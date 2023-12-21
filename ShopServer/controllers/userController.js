@@ -51,6 +51,7 @@ exports.findUserByEmail = async (req, res) => {
   }
 };
 
+/*
 exports.addSalesByUser = async (req, res) => {
   const { collection, client } = connectCollection("shop", "Users");
   try {
@@ -115,6 +116,44 @@ exports.addSalesByUser = async (req, res) => {
       );
 
       
+      if (result.matchedCount === 1 && result.modifiedCount === 1) {
+        res.json({ msg: "Productos añadidos a tu tienda", success: true });
+      } else {
+        res.json({
+          msg: "El producto ya está añadido a tu carro",
+          success: false,
+        });
+      }
+    } else {
+      res.json({ msg: "No tienes los permisos adecuados.", success: false });
+    }
+  } catch (error) {
+    res.status(403).json({ msg: error.message, success: false });
+  } finally {
+    await client.close();
+  }
+}
+*/
+
+exports.showStoreDetails = async (req, res) => {
+  const { collection, client } = connectCollection("shop", "Users");
+  try {
+    if (await authLogic.checkRBAC(req, ["Seller"])) {
+
+      const { userId, userStore, productList } = req.body;
+
+
+      const result = await collection.aggregate([
+          { $match: {_id: new ObjectId(req.body.userId)} },
+          { $lookup:{
+            from: "products",
+            localField: "store.name",
+            foreingField: "name",
+            as: "store_details"
+          }}
+        ]);
+        res.json(result);
+
       if (result.matchedCount === 1 && result.modifiedCount === 1) {
         res.json({ msg: "Productos añadidos a tu tienda", success: true });
       } else {

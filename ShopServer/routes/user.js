@@ -5,5 +5,7 @@ const controllers = require('../controllers/userController');
 
 router.post('/',controllers.createUser);
 router.post('/log',controllers.findUserByEmail);
+router.put('/',controllers.addSalesByUser);
+router.get('/',controllers.showStoreDetails);
 
 module.exports = router;
