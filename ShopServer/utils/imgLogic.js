@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 // Módulo de utilidades (imgLogic) que contiene funciones relacionadas con la manipulación de imágenes y la lógica asociada.
 
 // Importa el módulo 'image-size' para obtener las dimensiones de una imagen
@@ -53,7 +55,7 @@ function getMimeTypeFromUrl(url) {
 }
 
 // Función para guardar un archivo de imagen en el sistema de archivos
-function saveImgFile(req) {
+/*function saveImgFile(req) {
     const base64String = req.body.img;
 
     const buffer = Buffer.from(base64String.split(',')[1], 'base64');
@@ -64,7 +66,27 @@ function saveImgFile(req) {
     fs.writeFile(filePath(fileName), buffer, (error) => { throw new Error('Error al guardar la imagen.') });
 
     return fileName;
+}*/
+
+function saveImgFile(req) {
+    const base64String = req.body.img;
+    const buffer = Buffer.from(base64String.split(',')[1], 'base64');
+    const fileType = base64String.split(';')[0].split('/')[1];
+    const fileName = `img${Date.now()}.${fileType}`;
+
+    return new Promise((resolve, reject) => {
+        fs.writeFile(filePath(fileName), buffer, (error) => {
+            if (error) {
+                reject(new Error('Error al guardar la imagen.'));
+            } else {
+                resolve(fileName);
+            }
+        });
+    });
 }
+
+
+
 
 // Función para cargar una imagen desde el sistema de archivos y convertirla a base64
 exports.loadImg = (product) => {

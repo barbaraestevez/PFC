@@ -25,6 +25,7 @@ app.use(cors({
 
 // Middleware: Asocia las rutas definidas en './routes/product' con el prefijo '/api/products'
 app.use('/api/products', require('./routes/product'));
+app.use('/auth/orders', require('./routes/orders'));
 app.use('/auth/user', require('./routes/user'));
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
